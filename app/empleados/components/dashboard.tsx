@@ -113,39 +113,26 @@ export default function EmpleadosDashboard({
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {/* Próximos turnos */}
         <div className="xl:col-span-2 bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm">
-          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <h3 className="text-base font-semibold text-gray-900">Próximos turnos</h3>
-            <input
-              type="search"
-              value={shiftSearch}
-              onChange={(e) => setShiftSearch(e.target.value)}
-              placeholder="Buscar turnos"
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 sm:w-64"
-            />
-          </div>
+          <h3 className="text-base font-semibold text-gray-900 mb-3">Próximos turnos</h3>
           <div className="divide-y divide-gray-100 max-h-72 overflow-y-auto pr-1">
-            {filteredShifts.length > 0 ? (
-              filteredShifts.map((t: any) => (
-                <div key={t.id} className="py-3 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{t.role} · <span className="text-gray-600">{t.site}</span></p>
-                    <p className="text-xs text-gray-600">{formatDate(t.date)} · {t.time}</p>
-                    <p className="text-xs text-gray-500">{t.address}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {t.status === "Confirmado" ? (
-                      <button onClick={() => onCheckIn?.(t)} className="rounded-xl bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700">Check-in</button>
-                    ) : t.status === "Pendiente" ? (
-                      <span className="px-2 py-0.5 rounded-full text-xs bg-amber-100 text-amber-800">Pendiente</span>
-                    ) : (
-                      <span className="px-2 py-0.5 rounded-full text-xs bg-gray-200 text-gray-700">—</span>
-                    )}
-                  </div>
+            {upcomingShifts.map((t: any) => (
+              <div key={t.id} className="py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">{t.role} · <span className="text-gray-600">{t.site}</span></p>
+                  <p className="text-xs text-gray-600">{formatDate(t.date)} · {t.time}</p>
+                  <p className="text-xs text-gray-500">{t.address}</p>
                 </div>
-              ))
-            ) : (
-              <div className="py-6 text-center text-sm text-gray-500">No se encontraron turnos para esta búsqueda.</div>
-            )}
+                <div className="flex items-center gap-2">
+                  {t.status === "Confirmado" ? (
+                    <button onClick={() => onCheckIn?.(t)} className="rounded-xl bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700">Check-in</button>
+                  ) : t.status === "Pendiente" ? (
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-amber-100 text-amber-800">Pendiente</span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-gray-200 text-gray-700">—</span>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
