@@ -2,7 +2,7 @@
 
 import useAuthContext from "@/app/contexts/auth/useAuthContext";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 // Dashboard para Empleados (Trabajador)
 // - TailwindCSS, responsive
@@ -12,8 +12,6 @@ import React, { useMemo, useState } from "react";
 // - Filtros por zona/rol/franja horaria
 
 export default function EmpleadosDashboard({
-  zones = ["CABA Centro", "CABA Norte", "AMBA Oeste"],
-  roles = ["Mozo/a", "Cajero/a", "Cocina", "Delivery"],
   kpis = {
     nextShifts: 3,
     monthEarnings: 152000,
@@ -52,30 +50,67 @@ export default function EmpleadosDashboard({
   },
   onAcceptJob,
   onRejectJob,
+  onViewDetails,
   onCheckIn,
   onCheckOut,
   onUpdateDocs,
   onExport,
 }: any) {
-  const [filters, setFilters] = useState({ zone: "all", role: "all", time: "all" });
-
   const currency = (n: any) => n?.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
+  const formatDate = (isoDate: string) => {
+    if (!isoDate) return "";
+    const [year, month, day] = isoDate.split("-");
+    if (!year || !month || !day) return isoDate;
+    return `${day}/${month}/${year}`;
+  };
 
-  const filteredJobs = useMemo(() => {
-    return suggestedJobs.filter((j: any) => {
-      if (filters.zone !== "all" && !j.site.includes(filters.zone.split(" ")[1] || "")) return false; // demo filter
-      if (filters.role !== "all" && j.role !== filters.role) return false;
-      // time filter demo omitted
-      return true;
-    });
-  }, [suggestedJobs, filters]);
+  const [selectedJob, setSelectedJob] = useState<any | null>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  const handleViewDetails = (job: any) => {
+    onViewDetails?.(job);
+    setSelectedJob(job);
+  };
+
+  const handleAcceptJob = (job: any) => {
+    onAcceptJob?.(job);
+    setSelectedJob(null);
+  };
+
+  const handleRejectJob = (job: any) => {
+    onRejectJob?.(job);
+    setSelectedJob(null);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedJob(null);
+  };
   const { user } = useAuthContext();
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto flex gap-6">
+        <aside className={`${sidebarVisible ? (sidebarCollapsed ? 'w-16' : 'w-64') : 'w-0'} ${sidebarVisible ? 'block' : 'hidden'} ${sidebarVisible ? 'xl:block' : 'xl:hidden'}`}>
+          <nav className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm h-full flex flex-col justify-between">
+            <ul className="space-y-2 text-sm">
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'MC' : 'Mi cuenta'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'CB' : 'Mis cobros'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'Doc' : 'Documentación'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'PT' : 'Próximos turnos'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'DM' : 'Da una Manito'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'MR' : 'Mi reputación'}</button></li>
+            </ul>
+            <div>
+              <button onClick={() => setSidebarCollapsed((s) => !s)} className="w-full text-left px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50">{sidebarCollapsed ? '»' : '«'} Cerrar sesión</button>
+            </div>
+          </nav>
+        </aside>
+        <main className="flex-1">
       {/* Header */}
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold">M</div>
+          <button onClick={() => setSidebarCollapsed((s) => !s)} className="rounded-md p-1 bg-white/60 hover:bg-white hidden xl:inline">{sidebarCollapsed ? '»' : '«'}</button>
+          <button onClick={() => setSidebarVisible(v => !v)} aria-expanded={sidebarVisible} aria-controls="sidebar" className="h-10 w-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold">M</button>
           <div>
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Hola, {user?.role == "trabajador" ? user?.name.split(" ")[0] : user?.name}</h1>
             <p className="text-sm text-gray-500">Tu actividad y oportunidades</p>
@@ -94,46 +129,17 @@ export default function EmpleadosDashboard({
         <KpiCard title="Tasa de aceptación" value={`${kpis.acceptanceRate}%`} subtitle="Postulaciones" />
       </section>
 
-      {/* Filtros */}
-      <section className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <div>
-            <label className="text-xs text-gray-600">Zona</label>
-            <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-gray-900" value={filters.zone} onChange={(e) => setFilters((f) => ({ ...f, zone: e.target.value }))}>
-              <option value="all">Todas</option>
-              {zones.map((z: any) => (<option key={z} value={z}>{z}</option>))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-600">Rol</label>
-            <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-gray-900" value={filters.role} onChange={(e) => setFilters((f) => ({ ...f, role: e.target.value }))}>
-              <option value="all">Todos</option>
-              {roles.map((r: any) => (<option key={r} value={r}>{r}</option>))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-600">Franja</label>
-            <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-gray-900" value={filters.time} onChange={(e) => setFilters((f) => ({ ...f, time: e.target.value }))}>
-              {(["all", "Mañana", "Tarde", "Noche"]).map((t) => (<option key={t} value={t}>{t}</option>))}
-            </select>
-          </div>
-          <div className="flex items-end gap-2">
-            <button onClick={() => setFilters({ zone: "all", role: "all", time: "all" })} className="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm hover:bg-gray-50">Limpiar</button>
-          </div>
-        </div>
-      </section>
-
       {/* Grid principal */}
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {/* Próximos turnos */}
         <div className="xl:col-span-2 bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm">
           <h3 className="text-base font-semibold text-gray-900 mb-3">Próximos turnos</h3>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 max-h-72 overflow-y-auto pr-1">
             {upcomingShifts.map((t: any) => (
               <div key={t.id} className="py-3 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-900">{t.role} · <span className="text-gray-600">{t.site}</span></p>
-                  <p className="text-xs text-gray-600">{new Date(t.date).toLocaleDateString("es-AR")} · {t.time}</p>
+                  <p className="text-xs text-gray-600">{formatDate(t.date)} · {t.time}</p>
                   <p className="text-xs text-gray-500">{t.address}</p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -173,7 +179,7 @@ export default function EmpleadosDashboard({
             <h3 className="text-base font-semibold text-gray-900">Oportunidades sugeridas</h3>
             <span className="text-xs text-gray-500">Basadas en tu perfil y zona</span>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-72 overflow-y-auto">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="text-left text-gray-600">
@@ -187,23 +193,24 @@ export default function EmpleadosDashboard({
                 </tr>
               </thead>
               <tbody>
-                {filteredJobs.map((j: any) => (
+                {suggestedJobs.map((j: any) => (
                   <tr key={j.id} className="border-top border-gray-100">
                     <td className="py-2 pr-3 font-medium text-gray-900">{j.role}</td>
                     <td className="py-2 pr-3">{j.site}</td>
-                    <td className="py-2 pr-3">{new Date(j.date).toLocaleDateString("es-AR")}</td>
+                    <td className="py-2 pr-3">{formatDate(j.date)}</td>
                     <td className="py-2 pr-3">{j.time}</td>
                     <td className="py-2 pr-3">{j.distanceKm} km</td>
                     <td className="py-2 pr-3">{currency(j.pay)}</td>
                     <td className="py-2 flex gap-2 justify-end">
-                      <button onClick={() => onAcceptJob?.(j)} className="rounded-lg bg-emerald-600 text-white px-2.5 py-1.5 hover:bg-emerald-700">Aceptar</button>
-                      <button onClick={() => onRejectJob?.(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 hover:bg-gray-50">Rechazar</button>
+                      <button onClick={() => handleViewDetails(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 hover:bg-gray-50">Ver detalles</button>
+                      <button onClick={() => handleAcceptJob(j)} className="rounded-lg bg-emerald-600 text-white px-2.5 py-1.5 hover:bg-emerald-700">Aceptar</button>
+                      <button onClick={() => handleRejectJob(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 hover:bg-gray-50">Rechazar</button>
                     </td>
                   </tr>
                 ))}
-                {filteredJobs.length === 0 && (
+                {suggestedJobs.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="py-6 text-center text-gray-500">No hay oportunidades para los filtros seleccionados.</td>
+                    <td colSpan={7} className="py-6 text-center text-gray-500">No hay oportunidades disponibles en este momento.</td>
                   </tr>
                 )}
               </tbody>
@@ -244,6 +251,36 @@ export default function EmpleadosDashboard({
           </div>
         </div>
       </section>
+
+        </main>
+      </div>
+
+      {selectedJob && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={handleCloseModal} aria-hidden="true"></div>
+          <div role="dialog" aria-modal="true" className="relative z-10 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900">{selectedJob.role}</h4>
+                <p className="text-sm text-gray-600">{selectedJob.site}</p>
+              </div>
+              <button onClick={handleCloseModal} className="rounded-xl border border-gray-200 px-2 py-1 text-sm text-gray-600 hover:bg-gray-50" aria-label="Cerrar">Cerrar</button>
+            </div>
+            <div className="mt-4 space-y-2 text-sm text-gray-700">
+              <p><span className="font-medium text-gray-600">Fecha:</span> {formatDate(selectedJob.date)}</p>
+              <p><span className="font-medium text-gray-600">Horario:</span> {selectedJob.time}</p>
+              {selectedJob.distanceKm !== undefined && (
+                <p><span className="font-medium text-gray-600">Distancia estimada:</span> {selectedJob.distanceKm} km</p>
+              )}
+              <p><span className="font-medium text-gray-600">Pago:</span> {currency(selectedJob.pay)}</p>
+            </div>
+            <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+              <button onClick={() => handleRejectJob(selectedJob)} className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Rechazar</button>
+              <button onClick={() => handleAcceptJob(selectedJob)} className="rounded-lg bg-emerald-600 px-3 py-2 text-sm text-white hover:bg-emerald-700">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="text-xs text-gray-400 mt-6">© {new Date().getFullYear()} Manito · CABA/AMBA</footer>

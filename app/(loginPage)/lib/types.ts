@@ -8,7 +8,6 @@ export type RegisterForm = {
   password: string;
   confirm: string;
   terms: boolean;
-  news: boolean;
 };
 
 export type Errors = {
