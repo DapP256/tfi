@@ -210,7 +210,7 @@ const LoginForm = () => {
                     onChange={(e) => setForm((f) => ({ ...f, terms: e.target.checked }))}
                     className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                   />
-                  Acepto los <a className="underline" href="#">Términos y Condiciones</a> <a className="underline" href="#">d</a>.
+                  Acepto los <a className="underline" href="#">Términos y Condiciones</a>.
                 </label>
                 {errors.terms && <p className="text-sm text-red-600">{errors.terms}</p>}
 
