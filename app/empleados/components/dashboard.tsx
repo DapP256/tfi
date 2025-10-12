@@ -68,6 +68,23 @@ export default function EmpleadosDashboard({
     return `${day}/${month}/${year}`;
   };
 
+  const [selectedJob, setSelectedJob] = useState<any | null>(null);
+
+  const handleViewDetails = (job: any) => {
+    onViewDetails?.(job);
+    setSelectedJob(job);
+  };
+
+  const handleAcceptJob = (job: any) => {
+    onAcceptJob?.(job);
+    setSelectedJob(null);
+  };
+
+  const handleRejectJob = (job: any) => {
+    onRejectJob?.(job);
+    setSelectedJob(null);
+  };
+
   const filteredJobs = useMemo(() => {
     return suggestedJobs.filter((j: any) => {
       if (filters.zone !== "all" && !j.site.includes(filters.zone.split(" ")[1] || "")) return false; // demo filter
