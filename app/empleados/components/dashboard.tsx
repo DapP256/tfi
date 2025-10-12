@@ -66,6 +66,7 @@ export default function EmpleadosDashboard({
 
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   const handleViewDetails = (job: any) => {
     onViewDetails?.(job);
