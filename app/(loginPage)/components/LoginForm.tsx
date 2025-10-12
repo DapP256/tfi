@@ -18,7 +18,6 @@ const LoginForm = () => {
     password: "",
     confirm: "",
     terms: false,
-    news: true,
   });
   const [errors, setErrors] = useState<Errors>({});
   const [showPwd, setShowPwd] = useState(false);
@@ -211,19 +210,10 @@ const LoginForm = () => {
                     onChange={(e) => setForm((f) => ({ ...f, terms: e.target.checked }))}
                     className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                   />
-                  Acepto los <a className="underline" href="#">Términos y Condiciones</a> y la <a className="underline" href="#">Política de Privacidad</a>.
+                  Acepto los <a className="underline" href="#">Términos y Condiciones</a> <a className="underline" href="#">d</a>.
                 </label>
                 {errors.terms && <p className="text-sm text-red-600">{errors.terms}</p>}
 
-                <label className="inline-flex items-center gap-2 text-sm text-gray-700 select-none">
-                  <input
-                    type="checkbox"
-                    checked={form.news}
-                    onChange={(e) => setForm((f) => ({ ...f, news: e.target.checked }))}
-                    className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
-                  />
-                  Quiero recibir novedades y tips.
-                </label>
               </div>
 
               {/* Submit */}
