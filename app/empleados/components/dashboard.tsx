@@ -91,14 +91,31 @@ export default function EmpleadosDashboard({
     setSelectedJob(null);
   };
 
+  const filteredShifts = useMemo(() => {
+    const term = shiftSearch.trim().toLowerCase();
+    if (!term) return upcomingShifts;
+    return upcomingShifts.filter((shift: any) => {
+      const values = [shift.role, shift.site, shift.address, formatDate(shift.date), shift.time];
+      return values.some((value) => value && String(value).toLowerCase().includes(term));
+    });
+  }, [upcomingShifts, shiftSearch]);
+
   const filteredJobs = useMemo(() => {
+    const term = jobSearch.trim().toLowerCase();
     return suggestedJobs.filter((j: any) => {
       if (filters.zone !== "all" && !j.site.includes(filters.zone.split(" ")[1] || "")) return false; // demo filter
       if (filters.role !== "all" && j.role !== filters.role) return false;
-      // time filter demo omitted
+      if (term) {
+        const values = [j.role, j.site, formatDate(j.date), j.time, j.distanceKm, j.pay];
+        const matches = values.some((value) => {
+          if (value === undefined || value === null) return false;
+          return String(value).toLowerCase().includes(term);
+        });
+        if (!matches) return false;
+      }
       return true;
     });
-  }, [suggestedJobs, filters]);
+  }, [suggestedJobs, filters, jobSearch]);
   const { user } = useAuthContext();
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 p-4 md:p-8">
