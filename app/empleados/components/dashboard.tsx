@@ -87,6 +87,21 @@ export default function EmpleadosDashboard({
   const { user } = useAuthContext();
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto flex gap-6">
+        <aside className="hidden xl:block w-64">
+          <nav className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm h-full">
+            <ul className="space-y-2 text-sm">
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Mi cuenta</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Mis cobros</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Documentación</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Próximos turnos</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Da una Manito</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Mi reputación</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50">Cerrar sesión</button></li>
+            </ul>
+          </nav>
+        </aside>
+        <main className="flex-1">
       {/* Header */}
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
@@ -231,6 +246,9 @@ export default function EmpleadosDashboard({
           </div>
         </div>
       </section>
+
+        </main>
+      </div>
 
       {selectedJob && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
