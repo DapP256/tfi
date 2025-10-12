@@ -90,7 +90,7 @@ export default function EmpleadosDashboard({
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto flex gap-6">
-        <aside className={`hidden xl:block ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
+        <aside className={`${sidebarVisible ? (sidebarCollapsed ? 'w-16' : 'w-64') : 'w-0'} ${sidebarVisible ? 'block' : 'hidden'} ${sidebarVisible ? 'xl:block' : 'xl:hidden'}`}>
           <nav className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm h-full flex flex-col justify-between">
             <ul className="space-y-2 text-sm">
               <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'MC' : 'Mi cuenta'}</button></li>
