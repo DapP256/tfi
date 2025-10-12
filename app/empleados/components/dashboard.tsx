@@ -89,23 +89,26 @@ export default function EmpleadosDashboard({
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto flex gap-6">
-        <aside className="hidden xl:block w-64">
-          <nav className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm h-full">
+        <aside className={`hidden xl:block ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
+          <nav className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm h-full flex flex-col justify-between">
             <ul className="space-y-2 text-sm">
-              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Mi cuenta</button></li>
-              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Mis cobros</button></li>
-              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Documentación</button></li>
-              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Próximos turnos</button></li>
-              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Da una Manito</button></li>
-              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">Mi reputación</button></li>
-              <li><button className="w-full text-left px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50">Cerrar sesión</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'MC' : 'Mi cuenta'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'CB' : 'Mis cobros'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'Doc' : 'Documentación'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'PT' : 'Próximos turnos'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'DM' : 'Da una Manito'}</button></li>
+              <li><button className="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50">{sidebarCollapsed ? 'MR' : 'Mi reputación'}</button></li>
             </ul>
+            <div>
+              <button onClick={() => setSidebarCollapsed((s) => !s)} className="w-full text-left px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50">{sidebarCollapsed ? '»' : '«'} Cerrar sesión</button>
+            </div>
           </nav>
         </aside>
         <main className="flex-1">
       {/* Header */}
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
+          <button onClick={() => setSidebarCollapsed((s) => !s)} className="rounded-md p-1 bg-white/60 hover:bg-white hidden xl:inline">{sidebarCollapsed ? '»' : '«'}</button>
           <div className="h-10 w-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold">M</div>
           <div>
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Hola, {user?.role == "trabajador" ? user?.name.split(" ")[0] : user?.name}</h1>
