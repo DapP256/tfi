@@ -2,7 +2,7 @@
 
 import useAuthContext from "@/app/contexts/auth/useAuthContext";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 // Dashboard para Empleados (Trabajador)
 // - TailwindCSS, responsive
