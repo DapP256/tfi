@@ -273,7 +273,7 @@ export default function EmpleadosDashboard({
                 ))}
                 {filteredJobs.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="py-6 text-center text-gray-500">No hay oportunidades para los filtros seleccionados.</td>
+                    <td colSpan={7} className="py-6 text-center text-gray-500">No hay oportunidades para los filtros o la búsqueda actual.</td>
                   </tr>
                 )}
               </tbody>
