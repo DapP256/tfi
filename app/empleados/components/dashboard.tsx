@@ -229,9 +229,18 @@ export default function EmpleadosDashboard({
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4">
         {/* Oportunidades */}
         <div className="xl:col-span-2 bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-base font-semibold text-gray-900">Oportunidades sugeridas</h3>
-            <span className="text-xs text-gray-500">Basadas en tu perfil y zona</span>
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="text-base font-semibold text-gray-900">Oportunidades sugeridas</h3>
+              <span className="text-xs text-gray-500">Basadas en tu perfil y zona</span>
+            </div>
+            <input
+              type="search"
+              value={jobSearch}
+              onChange={(e) => setJobSearch(e.target.value)}
+              placeholder="Buscar oportunidades"
+              className="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 sm:w-64"
+            />
           </div>
           <div className="overflow-x-auto max-h-72 overflow-y-auto">
             <table className="min-w-full text-sm">
