@@ -110,7 +110,7 @@ export default function EmpleadosDashboard({
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
           <button onClick={() => setSidebarCollapsed((s) => !s)} className="rounded-md p-1 bg-white/60 hover:bg-white hidden xl:inline">{sidebarCollapsed ? '»' : '«'}</button>
-          <div className="h-10 w-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold">M</div>
+          <button onClick={() => setSidebarVisible(v => !v)} aria-expanded={sidebarVisible} aria-controls="sidebar" className="h-10 w-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold">M</button>
           <div>
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Hola, {user?.role == "trabajador" ? user?.name.split(" ")[0] : user?.name}</h1>
             <p className="text-sm text-gray-500">Tu actividad y oportunidades</p>
