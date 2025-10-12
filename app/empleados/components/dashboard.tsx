@@ -109,35 +109,6 @@ export default function EmpleadosDashboard({
         <KpiCard title="Tasa de aceptación" value={`${kpis.acceptanceRate}%`} subtitle="Postulaciones" />
       </section>
 
-      {/* Filtros */}
-      <section className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <div>
-            <label className="text-xs text-gray-600">Zona</label>
-            <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-gray-900" value={filters.zone} onChange={(e) => setFilters((f) => ({ ...f, zone: e.target.value }))}>
-              <option value="all">Todas</option>
-              {zones.map((z: any) => (<option key={z} value={z}>{z}</option>))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-600">Rol</label>
-            <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-gray-900" value={filters.role} onChange={(e) => setFilters((f) => ({ ...f, role: e.target.value }))}>
-              <option value="all">Todos</option>
-              {roles.map((r: any) => (<option key={r} value={r}>{r}</option>))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-600">Franja</label>
-            <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-gray-900" value={filters.time} onChange={(e) => setFilters((f) => ({ ...f, time: e.target.value }))}>
-              {(["all", "Mañana", "Tarde", "Noche"]).map((t) => (<option key={t} value={t}>{t}</option>))}
-            </select>
-          </div>
-          <div className="flex items-end gap-2">
-            <button onClick={() => setFilters({ zone: "all", role: "all", time: "all" })} className="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm hover:bg-gray-50">Limpiar</button>
-          </div>
-        </div>
-      </section>
-
       {/* Grid principal */}
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {/* Próximos turnos */}
