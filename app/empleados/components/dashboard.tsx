@@ -156,7 +156,7 @@ export default function EmpleadosDashboard({
         {/* Próximos turnos */}
         <div className="xl:col-span-2 bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-2xl p-4 md:p-5 shadow-sm">
           <h3 className="text-base font-semibold text-gray-900 mb-3">Próximos turnos</h3>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 max-h-72 overflow-y-auto pr-1">
             {upcomingShifts.map((t: any) => (
               <div key={t.id} className="py-3 flex items-center justify-between">
                 <div>
@@ -201,7 +201,7 @@ export default function EmpleadosDashboard({
             <h3 className="text-base font-semibold text-gray-900">Oportunidades sugeridas</h3>
             <span className="text-xs text-gray-500">Basadas en tu perfil y zona</span>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-72 overflow-y-auto">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="text-left text-gray-600">
