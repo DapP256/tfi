@@ -274,6 +274,33 @@ export default function EmpleadosDashboard({
         </div>
       </section>
 
+      {selectedJob && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={handleCloseModal} aria-hidden="true"></div>
+          <div role="dialog" aria-modal="true" className="relative z-10 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900">{selectedJob.role}</h4>
+                <p className="text-sm text-gray-600">{selectedJob.site}</p>
+              </div>
+              <button onClick={handleCloseModal} className="rounded-xl border border-gray-200 px-2 py-1 text-sm text-gray-600 hover:bg-gray-50" aria-label="Cerrar">Cerrar</button>
+            </div>
+            <div className="mt-4 space-y-2 text-sm text-gray-700">
+              <p><span className="font-medium text-gray-600">Fecha:</span> {formatDate(selectedJob.date)}</p>
+              <p><span className="font-medium text-gray-600">Horario:</span> {selectedJob.time}</p>
+              {selectedJob.distanceKm !== undefined && (
+                <p><span className="font-medium text-gray-600">Distancia estimada:</span> {selectedJob.distanceKm} km</p>
+              )}
+              <p><span className="font-medium text-gray-600">Pago:</span> {currency(selectedJob.pay)}</p>
+            </div>
+            <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+              <button onClick={() => handleRejectJob(selectedJob)} className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Rechazar</button>
+              <button onClick={() => handleAcceptJob(selectedJob)} className="rounded-lg bg-emerald-600 px-3 py-2 text-sm text-white hover:bg-emerald-700">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="text-xs text-gray-400 mt-6">© {new Date().getFullYear()} Manito · CABA/AMBA</footer>
     </div>
