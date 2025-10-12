@@ -12,8 +12,6 @@ import React, { useState } from "react";
 // - Filtros por zona/rol/franja horaria
 
 export default function EmpleadosDashboard({
-  zones = ["CABA Centro", "CABA Norte", "AMBA Oeste"],
-  roles = ["Mozo/a", "Cajero/a", "Cocina", "Delivery"],
   kpis = {
     nextShifts: 3,
     monthEarnings: 152000,
