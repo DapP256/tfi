@@ -85,6 +85,10 @@ export default function EmpleadosDashboard({
     setSelectedJob(null);
   };
 
+  const handleCloseModal = () => {
+    setSelectedJob(null);
+  };
+
   const filteredJobs = useMemo(() => {
     return suggestedJobs.filter((j: any) => {
       if (filters.zone !== "all" && !j.site.includes(filters.zone.split(" ")[1] || "")) return false; // demo filter
@@ -220,9 +224,9 @@ export default function EmpleadosDashboard({
                     <td className="py-2 pr-3">{j.distanceKm} km</td>
                     <td className="py-2 pr-3">{currency(j.pay)}</td>
                     <td className="py-2 flex gap-2 justify-end">
-                      <button onClick={() => onViewDetails?.(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 hover:bg-gray-50">Ver detalles</button>
-                      <button onClick={() => onAcceptJob?.(j)} className="rounded-lg bg-emerald-600 text-white px-2.5 py-1.5 hover:bg-emerald-700">Aceptar</button>
-                      <button onClick={() => onRejectJob?.(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 hover:bg-gray-50">Rechazar</button>
+                      <button onClick={() => handleViewDetails(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-gray-700 hover:bg-gray-50">Ver detalles</button>
+                      <button onClick={() => handleAcceptJob(j)} className="rounded-lg bg-emerald-600 text-white px-2.5 py-1.5 hover:bg-emerald-700">Aceptar</button>
+                      <button onClick={() => handleRejectJob(j)} className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 hover:bg-gray-50">Rechazar</button>
                     </td>
                   </tr>
                 ))}
