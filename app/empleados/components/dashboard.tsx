@@ -61,6 +61,12 @@ export default function EmpleadosDashboard({
   const [filters, setFilters] = useState({ zone: "all", role: "all", time: "all" });
 
   const currency = (n: any) => n?.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
+  const formatDate = (isoDate: string) => {
+    if (!isoDate) return "";
+    const [year, month, day] = isoDate.split("-");
+    if (!year || !month || !day) return isoDate;
+    return `${day}/${month}/${year}`;
+  };
 
   const filteredJobs = useMemo(() => {
     return suggestedJobs.filter((j: any) => {
@@ -134,7 +140,7 @@ export default function EmpleadosDashboard({
               <div key={t.id} className="py-3 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-900">{t.role} · <span className="text-gray-600">{t.site}</span></p>
-                  <p className="text-xs text-gray-600">{new Date(t.date).toLocaleDateString("es-AR")} · {t.time}</p>
+                  <p className="text-xs text-gray-600">{formatDate(t.date)} · {t.time}</p>
                   <p className="text-xs text-gray-500">{t.address}</p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -192,7 +198,7 @@ export default function EmpleadosDashboard({
                   <tr key={j.id} className="border-top border-gray-100">
                     <td className="py-2 pr-3 font-medium text-gray-900">{j.role}</td>
                     <td className="py-2 pr-3">{j.site}</td>
-                    <td className="py-2 pr-3">{new Date(j.date).toLocaleDateString("es-AR")}</td>
+                    <td className="py-2 pr-3">{formatDate(j.date)}</td>
                     <td className="py-2 pr-3">{j.time}</td>
                     <td className="py-2 pr-3">{j.distanceKm} km</td>
                     <td className="py-2 pr-3">{currency(j.pay)}</td>
