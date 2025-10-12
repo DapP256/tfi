@@ -56,10 +56,6 @@ export default function EmpleadosDashboard({
   onUpdateDocs,
   onExport,
 }: any) {
-  const [filters, setFilters] = useState({ zone: "all", role: "all", time: "all" });
-  const [shiftSearch, setShiftSearch] = useState("");
-  const [jobSearch, setJobSearch] = useState("");
-
   const currency = (n: any) => n?.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
   const formatDate = (isoDate: string) => {
     if (!isoDate) return "";
