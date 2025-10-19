@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { Errors, RegisterForm } from "../lib/types";
 import StrongBarPassword from "./StrongBarPassword";
 import useAuthContext from "@/app/contexts/auth/useAuthContext";
@@ -180,6 +181,12 @@ const LoginForm = () => {
                 </div>
                 {errors.password && <p className="text-sm text-red-600 mt-1">{errors.password}</p>}
                 <StrongBarPassword score={pwdScore} />
+              </div>
+
+              <div className="text-right text-sm">
+                <Link href="/recuperar" className="text-emerald-700 hover:text-emerald-800 font-medium">
+                  ¿Olvidaste tu contraseña?
+                </Link>
               </div>
 
               {/* Confirmación */}
